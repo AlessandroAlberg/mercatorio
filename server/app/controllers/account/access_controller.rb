@@ -1,11 +1,11 @@
 class Account::AccessController < ApplicationController
 
-  before_action :customer_logged_in, :except => [:login, :attempt_login, :logout]
+  before_action :user_logged_in, :except => [:login, :attempt_login, :logout]
 
   def menu
-    @found_customer = Customer.find(session[:customer_id])
-    @customer = @found_customer.first_name
-    @customer_id = @found_customer.customer_id
+    @found_user = user.find(session[:user_id])
+    @user = @found_user.first_name
+    @user_id = @found_user.user_id
 
     if session[:pending_rent]
       @cart_count = session[:pending_rent].count
@@ -17,14 +17,14 @@ class Account::AccessController < ApplicationController
   
   def attempt_login
   	if params[:username].present? && params[:password].present?
-      found_customer = Customer.where(username: params[:username]).first
-      if found_customer
-        customer = found_customer.authenticate(params[:password])
+      found_user = user.where(username: params[:username]).first
+      if found_user
+        user = found_user.authenticate(params[:password])
       end
     end
 
-    if customer
-      session[:customer_id] = customer.id
+    if user
+      session[:user_id] = user.id
       flash[:notice] = "You are now logged in."
       redirect_to(account_path)
     else
@@ -34,14 +34,14 @@ class Account::AccessController < ApplicationController
   end
 
   def logout
-  	session[:customer_id] = nil
+  	session[:user_id] = nil
     flash[:notice] = "Logged out."
     redirect_to(account_access_login_path)
   end  
 
   private
-    def customer_params
-      params.require(:customer).permit(:first_name, :last_name, :store_id, :address_id)
+    def user_params
+      params.require(:user).permit(:name, :email, :password)
     end
 
 end

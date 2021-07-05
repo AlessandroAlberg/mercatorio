@@ -1,9 +1,9 @@
 class PublicController < ApplicationController
   
   def index
-  	if session[:customer_id]
-    	@found_customer = Customer.find(session[:customer_id])
-    	@customer = @found_customer.first_name
+  	if session[:user_id]
+    	@found_user = User.find(session[:user_id])
+    	@user = @found_user.email
     end	
     
     if session[:pending_rent]
@@ -12,8 +12,8 @@ class PublicController < ApplicationController
   end
 
   def search
-    @films = Film.search(params[:film_search]).sorted
-    if @films.blank?
+    @books = Book.search(params[:book_search]).sorted
+    if @books.blank?
       flash[:notice] = "No match found"
     else
       flash[:notice] = nil
@@ -21,8 +21,8 @@ class PublicController < ApplicationController
   end
 
   def letter
-    @films = Film.letter(params[:first_letter])
-    if @films.blank?
+    @books = Book.letter(params[:first_letter])
+    if @books.blank?
       flash[:notice] = "No match for this letter"
     else
       flash[:notice] = nil

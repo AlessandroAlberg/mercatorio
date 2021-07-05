@@ -1,18 +1,9 @@
 class CheckoutController < ApplicationController
 
 	def new
-		if session[:customer_id]
-			@customer = Customer.find(session[:customer_id])
-			@customer_session = session[:customer_id]
-			@film_session = session[:pending_rent]
-			# @rental = Rental.new
-			# if session[:pending_rent]
-			# 	@hash = Hash.new(0)
-			# 	session[:pending_rent].each do |film|
-			# 		@hash[Film.find(film)] += 1
-			# 	end
-			# else
-			# end
+		if session[:user_id]
+			@user = User.find(session[:user_id])
+			@user_session = session[:user_id]
 		else
 			redirect_to(account_access_login_path)
 		end
@@ -29,7 +20,7 @@ class CheckoutController < ApplicationController
 
 	private
 		def rental_parameters
-			params.require(:rental).permit(:rental_date, :inventory_id, :customer_id)
+			params.require(:rental).permit(:rental_date, :inventory_id, :user_id)
 		end
 
 end

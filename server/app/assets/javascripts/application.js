@@ -12,9 +12,5 @@
 //
 //= require turbolinks
 // require_tree .
-//= require admins
 //= require ajax
-//= require admin_customer
-//= require admin_film
-//= require public_film
 //= require bootstrap.min
