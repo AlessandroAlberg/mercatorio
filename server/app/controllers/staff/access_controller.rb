@@ -1,4 +1,4 @@
-class Staff::AccessController < ApplicationController
+class User::AccessController < ApplicationController
 
 	before_action :staff_logged_in, :except => [:login, :attempt_login, :logout]
 
@@ -9,8 +9,8 @@ class Staff::AccessController < ApplicationController
   end
   
   def attempt_login
-  	if params[:username].present? && params[:password].present?
-      found_member = Staff.where(username: params[:username]).first
+  	if params[:email].present? && params[:password].present?
+      found_member = User.where(email: params[:email]).first
       if found_member
         authorized_member = found_member.authenticate(params[:password])
       end
@@ -21,7 +21,7 @@ class Staff::AccessController < ApplicationController
       flash[:notice] = "You are now logged in."
       redirect_to(staff_path)
     else
-      flash.now[:notice] = "Invalid username/password combination."
+      flash.now[:notice] = "Invalid email/password combination."
       render('login')
     end
   end
